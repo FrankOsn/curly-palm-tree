@@ -93,7 +93,7 @@
             justify-content: center;
             align-items: baseline;
             padding: 20px 10px;
-            background: linear-gradient(to bottom, #222 0%, #000 50%, #222 100%);
+            background-color: #000000;
             color: var(--text-white);
             font-family: "Supermercado One", sans-serif;
         }
@@ -388,6 +388,16 @@
                 <option value="PZA">Pieza (PZA)</option>
             </select>
         </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Color Texto:</label>
+                <input type="color" id="inputTextColor" value="#ffffff" onchange="updateDisplay()">
+            </div>
+            <div class="form-group">
+                <label>Color Fondo:</label>
+                <input type="color" id="inputBgColor" value="#000000" onchange="updateDisplay()">
+            </div>
+        </div>
         <button onclick="copyPriceTagToClipboard()">📋 Copiar Pricetag Simple</button>
         <div class="copy-success" id="copySuccess">✓ ¡Copiado al portapapeles!</div>
     </div>
@@ -563,6 +573,16 @@
                     <label>Color del Contorno:</label>
                     <input type="color" id="inputBorderColor" value="#000000" oninput="updateDisplayComplete()">
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Color Texto:</label>
+                        <input type="color" id="inputCompleteTextColor" value="#000000" oninput="updateDisplayComplete()">
+                    </div>
+                    <div class="form-group">
+                        <label>Color Fondo:</label>
+                        <input type="color" id="inputCompleteBgColor" value="#ffffff" oninput="updateDisplayComplete()">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -585,10 +605,19 @@
             const isSale = document.getElementById('inputIsSale').checked;
             const oldPrice = document.getElementById('inputOldPrice').value;
             const unit = document.getElementById('inputUnit').value;
+            const textColor = document.getElementById('inputTextColor').value;
+            const bgColor = document.getElementById('inputBgColor').value;
 
             document.getElementById('displayMain').innerText = mainPrice;
             document.getElementById('displayCents').innerText = cents.toString().padStart(2, '0');
             document.getElementById('displayUnit').innerText = unit;
+            
+            const priceBody = document.querySelector('.price-body');
+            priceBody.style.backgroundColor = bgColor;
+            priceBody.style.color = textColor;
+            document.querySelector('.currency-symbol').style.color = textColor;
+            document.querySelector('.unit').style.color = textColor;
+            document.querySelector('.unit').style.borderLeftColor = textColor;
 
             const header = document.getElementById('saleHeader');
             const oldPriceDiv = document.getElementById('oldPriceGroup');
@@ -609,18 +638,19 @@
             
             try {
                 const canvas = await html2canvas(priceTag, {
-                    scale: 4,
+                    scale: 6,
                     backgroundColor: null,
                     logging: false,
                     allowTaint: true,
                     useCORS: true,
-                    windowHeight: priceTag.offsetHeight * 4,
-                    windowWidth: priceTag.offsetWidth * 4,
-                    imageTimeout: 0
+                    windowHeight: priceTag.offsetHeight * 6,
+                    windowWidth: priceTag.offsetWidth * 6,
+                    imageTimeout: 0,
+                    pixelRatio: 2
                 });
                 
                 const blob = await new Promise((resolve, reject) => {
-                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Failed')), 'image/png', 1);
+                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Failed')), 'image/png', 0.95);
                 });
 
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
@@ -657,14 +687,22 @@
             const priceTag = document.getElementById('priceTagComplete');
             priceTag.style.width = widthCm + 'px';
             priceTag.style.height = heightCm + 'px';
+            
+            const textColor = document.getElementById('inputCompleteTextColor').value;
+            const bgColor = document.getElementById('inputCompleteBgColor').value;
+            priceTag.style.backgroundColor = bgColor;
+            priceTag.style.color = textColor;
 
             const lineSpacing = document.getElementById('inputLineSpacing').value;
+            const borderColor = document.getElementById('inputBorderColor').value;
             const displayName = document.getElementById('displayProductName');
             displayName.style.display = showLine1 ? 'block' : 'none';
             displayName.innerText = document.getElementById('inputProductName').value;
             displayName.style.fontSize = document.getElementById('inputNameSize').value + 'rem';
             displayName.style.textAlign = document.getElementById('inputNameAlign').value;
             displayName.style.lineHeight = 1.1 * lineSpacing;
+            displayName.style.color = textColor;
+            displayName.style.borderBottomColor = borderColor;
 
             const displayDesc = document.getElementById('displayProductDesc');
             displayDesc.style.display = showLine2 ? 'block' : 'none';
@@ -673,6 +711,7 @@
             displayDesc.style.textAlign = document.getElementById('inputDescAlign').value;
             displayDesc.style.lineHeight = 1.3 * lineSpacing;
             displayDesc.style.marginBottom = showLine2 ? (8 * lineSpacing) + 'px' : '0px';
+            displayDesc.style.color = textColor;
 
             const priceSection = document.querySelector('.price-section-complete');
             priceSection.style.display = showLine3 ? 'flex' : 'none';
@@ -680,18 +719,20 @@
             const priceSize = document.getElementById('inputPriceSize').value;
             document.getElementById('displayPriceMain').innerText = document.getElementById('inputPriceMain').value;
             document.getElementById('displayPriceMain').style.fontSize = priceSize + 'rem';
+            document.getElementById('displayPriceMain').style.color = textColor;
             document.getElementById('displayPriceCents').innerText = document.getElementById('inputPriceCents').value.padStart(2, '0');
             document.getElementById('displayPriceCents').style.fontSize = (priceSize * 0.45) + 'rem';
+            document.getElementById('displayPriceCents').style.color = textColor;
             document.getElementById('displayPriceUnit').innerText = document.getElementById('inputPriceUnit').value;
+            document.getElementById('displayPriceUnit').style.color = textColor;
 
             const priceAlign = document.getElementById('inputPriceAlign').value;
             priceSection.style.justifyContent = priceAlign === 'left' ? 'space-between' : priceAlign === 'center' ? 'center' : 'flex-end';
             priceSection.style.gap = priceAlign !== 'left' ? '20px' : '0px';
-
-            const borderColor = document.getElementById('inputBorderColor').value;
-            priceTag.style.borderColor = borderColor;
-            displayName.style.borderBottomColor = borderColor;
+            priceSection.style.color = textColor;
             priceSection.style.borderTopColor = borderColor;
+
+            priceTag.style.borderColor = borderColor;
         }
 
         async function copyPriceTagComplete() {
@@ -700,18 +741,19 @@
             
             try {
                 const canvas = await html2canvas(priceTagComplete, {
-                    scale: 4,
+                    scale: 6,
                     backgroundColor: null,
                     logging: false,
                     allowTaint: true,
                     useCORS: true,
-                    windowHeight: priceTagComplete.offsetHeight * 4,
-                    windowWidth: priceTagComplete.offsetWidth * 4,
-                    imageTimeout: 0
+                    windowHeight: priceTagComplete.offsetHeight * 6,
+                    windowWidth: priceTagComplete.offsetWidth * 6,
+                    imageTimeout: 0,
+                    pixelRatio: 2
                 });
                 
                 const blob = await new Promise((resolve, reject) => {
-                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Failed')), 'image/png', 1);
+                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Failed')), 'image/png', 0.95);
                 });
 
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
