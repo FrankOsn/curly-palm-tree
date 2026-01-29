@@ -361,8 +361,42 @@
                 <input type="number" id="inputNameSize" value="1.8" step="0.1" min="0.5" max="3" oninput="updateDisplayComplete()">
             </div>
             <div class="form-group">
+                <label>Alineación Nombre:</label>
+                <select id="inputNameAlign" onchange="updateDisplayComplete()">
+                    <option value="left">Izquierda</option>
+                    <option value="center" selected>Centro</option>
+                    <option value="right">Derecha</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
                 <label>Tamaño Desc (rem):</label>
                 <input type="number" id="inputDescSize" value="0.85" step="0.05" min="0.5" max="2" oninput="updateDisplayComplete()">
+            </div>
+            <div class="form-group">
+                <label>Alineación Desc:</label>
+                <select id="inputDescAlign" onchange="updateDisplayComplete()">
+                    <option value="left">Izquierda</option>
+                    <option value="center" selected>Centro</option>
+                    <option value="right">Derecha</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Tamaño Precio (rem):</label>
+                <input type="number" id="inputPriceSize" value="3" step="0.2" min="1" max="4" oninput="updateDisplayComplete()">
+            </div>
+            <div class="form-group">
+                <label>Alineación Precio:</label>
+                <select id="inputPriceAlign" onchange="updateDisplayComplete()">
+                    <option value="left" selected>Izquierda</option>
+                    <option value="center">Centro</option>
+                    <option value="right">Derecha</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -458,25 +492,47 @@
             const unit = document.getElementById('inputPriceUnit').value || 'KG';
             const nameSize = document.getElementById('inputNameSize').value || '1.8';
             const descSize = document.getElementById('inputDescSize').value || '0.85';
+            const priceSize = document.getElementById('inputPriceSize').value || '3';
             const borderColor = document.getElementById('inputBorderColor').value || '#000000';
+            
+            const nameAlign = document.getElementById('inputNameAlign').value || 'center';
+            const descAlign = document.getElementById('inputDescAlign').value || 'center';
+            const priceAlign = document.getElementById('inputPriceAlign').value || 'left';
 
-            // Actualizar Display Completo
-            document.getElementById('displayProductName').innerText = productName;
-            document.getElementById('displayProductName').style.fontSize = nameSize + 'rem';
+            // Actualizar nombre
+            const displayName = document.getElementById('displayProductName');
+            displayName.innerText = productName;
+            displayName.style.fontSize = nameSize + 'rem';
+            displayName.style.textAlign = nameAlign;
             
-            document.getElementById('displayProductDesc').innerText = productDesc;
-            document.getElementById('displayProductDesc').style.fontSize = descSize + 'rem';
+            // Actualizar descripción
+            const displayDesc = document.getElementById('displayProductDesc');
+            displayDesc.innerText = productDesc;
+            displayDesc.style.fontSize = descSize + 'rem';
+            displayDesc.style.textAlign = descAlign;
             
+            // Actualizar precio
             document.getElementById('displayPriceMain').innerText = mainPrice;
+            document.getElementById('displayPriceMain').style.fontSize = priceSize + 'rem';
+            
             document.getElementById('displayPriceCents').innerText = cents.toString().padStart(2, '0');
+            document.getElementById('displayPriceCents').style.fontSize = (priceSize * 0.45) + 'rem';
+            
             document.getElementById('displayPriceUnit').innerText = unit;
+            
+            // Alineación de precio
+            const priceSection = document.querySelector('.price-section-complete');
+            priceSection.style.justifyContent = priceAlign === 'left' ? 'space-between' : priceAlign === 'center' ? 'center' : 'flex-end';
+            if (priceAlign !== 'left') {
+                priceSection.style.gap = '20px';
+            } else {
+                priceSection.style.gap = '0px';
+            }
             
             // Actualizar color del borde
             document.getElementById('priceTagComplete').style.borderColor = borderColor;
-            
-            // Actualizar línea separadora del nombre
-            document.getElementById('displayProductName').style.borderBottomColor = borderColor;
-            document.getElementById('displayPriceUnit').parentElement.parentElement.style.borderTopColor = borderColor;
+            displayName.style.borderBottomColor = borderColor;
+            priceSection.style.borderTopColor = borderColor;
         }
 
         async function copyPriceTagComplete() {
