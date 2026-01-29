@@ -687,6 +687,10 @@
                 <strong>🎨 Estilos Generales</strong>
             </div>
             <div class="section-content open">
+                <div class="section-visibility">
+                    <input type="checkbox" id="showBorderComplete" checked onchange="updateDisplayComplete()">
+                    <label for="showBorderComplete" style="margin: 0;">Mostrar Contorno</label>
+                </div>
                 <div class="form-group">
                     <label>Color del Contorno:</label>
                     <input type="color" id="inputBorderColor" value="#000000" oninput="updateDisplayComplete()">
@@ -860,6 +864,7 @@
             const showLine1 = document.getElementById('showLine1').checked;
             const showLine2 = document.getElementById('showLine2').checked;
             const showLine3 = document.getElementById('showLine3').checked;
+            const showBorderComplete = document.getElementById('showBorderComplete').checked;
 
             const widthCm = document.getElementById('inputWidth').value * 37.8;
             const heightCm = document.getElementById('inputHeight').value * 37.8;
@@ -870,11 +875,19 @@
             
             const textColor = document.getElementById('inputCompleteTextColor').value;
             const bgColor = document.getElementById('inputCompleteBgColor').value;
+            const borderColor = document.getElementById('inputBorderColor').value;
+            
             priceTag.style.backgroundColor = bgColor;
             priceTag.style.color = textColor;
+            
+            // Aplicar contorno
+            if(showBorderComplete) {
+                priceTag.style.border = '3px solid ' + borderColor;
+            } else {
+                priceTag.style.border = 'none';
+            }
 
             const lineSpacing = document.getElementById('inputLineSpacing').value;
-            const borderColor = document.getElementById('inputBorderColor').value;
             const displayName = document.getElementById('displayProductName');
             displayName.style.display = showLine1 ? 'block' : 'none';
             displayName.innerText = document.getElementById('inputProductName').value;
@@ -911,8 +924,6 @@
             priceSection.style.gap = priceAlign !== 'left' ? '20px' : '0px';
             priceSection.style.color = textColor;
             priceSection.style.borderTopColor = borderColor;
-
-            priceTag.style.borderColor = borderColor;
         }
 
         async function copyPriceTagComplete() {
