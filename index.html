@@ -192,16 +192,17 @@
         }
 
         .product-name-section {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 900;
             color: #000;
-            line-height: 1.2;
+            line-height: 1.1;
             text-transform: uppercase;
             border-bottom: 2px solid #000;
             padding-bottom: 8px;
             padding-top: 0px;
-            min-height: 50px;
+            min-height: auto;
             font-family: "Roboto", sans-serif;
+            word-wrap: break-word;
         }
 
         .product-description-section {
@@ -256,9 +257,9 @@
         .unit-complete {
             font-size: 0.9rem;
             color: #000;
-            font-weight: bold;
+            font-weight: 900;
             text-align: right;
-            font-family: "Supermercado One", sans-serif;
+            font-family: "Roboto", sans-serif;
         }
     </style>
 </head>
@@ -354,6 +355,20 @@
                 <option value="PZA">Pieza (PZA)</option>
             </select>
         </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Tamaño Nombre (rem):</label>
+                <input type="number" id="inputNameSize" value="1.8" step="0.1" min="0.5" max="3" oninput="updateDisplayComplete()">
+            </div>
+            <div class="form-group">
+                <label>Tamaño Desc (rem):</label>
+                <input type="number" id="inputDescSize" value="0.85" step="0.05" min="0.5" max="2" oninput="updateDisplayComplete()">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Color del Contorno:</label>
+            <input type="color" id="inputBorderColor" value="#000000" oninput="updateDisplayComplete()">
+        </div>
         <button onclick="copyPriceTagComplete()">📋 Copiar Pricetag Completo a Portapapeles</button>
         <div class="copy-success" id="copySuccessComplete">✓ ¡Copiado al portapapeles!</div>
     </div>
@@ -441,13 +456,27 @@
             const mainPrice = document.getElementById('inputPriceMain').value || '0';
             const cents = document.getElementById('inputPriceCents').value || '00';
             const unit = document.getElementById('inputPriceUnit').value || 'KG';
+            const nameSize = document.getElementById('inputNameSize').value || '1.8';
+            const descSize = document.getElementById('inputDescSize').value || '0.85';
+            const borderColor = document.getElementById('inputBorderColor').value || '#000000';
 
             // Actualizar Display Completo
             document.getElementById('displayProductName').innerText = productName;
+            document.getElementById('displayProductName').style.fontSize = nameSize + 'rem';
+            
             document.getElementById('displayProductDesc').innerText = productDesc;
+            document.getElementById('displayProductDesc').style.fontSize = descSize + 'rem';
+            
             document.getElementById('displayPriceMain').innerText = mainPrice;
             document.getElementById('displayPriceCents').innerText = cents.toString().padStart(2, '0');
             document.getElementById('displayPriceUnit').innerText = unit;
+            
+            // Actualizar color del borde
+            document.getElementById('priceTagComplete').style.borderColor = borderColor;
+            
+            // Actualizar línea separadora del nombre
+            document.getElementById('displayProductName').style.borderBottomColor = borderColor;
+            document.getElementById('displayPriceUnit').parentElement.parentElement.style.borderTopColor = borderColor;
         }
 
         async function copyPriceTagComplete() {
