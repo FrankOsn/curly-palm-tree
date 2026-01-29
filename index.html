@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Supermercado+One&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display de Precio - Supermercado</title>
+    <style>
+        .supermercado-one-regular {
+        font-family: "Supermercado One", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        }
+
+        :root {
+            --bg-black: #1a1a1a;
+            --red-sale: #d32f2f;
+            --text-white: #ffffff;
+            --panel-bg: #121212;
+        }
+
+        body {
+            font-family: "Supermercado One", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            background-color: #f0f0f0;
+            display: flex;
+            gap: 40px;
+            padding: 50px;
+            align-items: flex-start;
+        }
+
+        /* --- ESTILOS DEL DISPLAY --- */
+        .price-tag {
+            width: 400px;
+            background-color: var(--bg-black);
+            border: 8px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Cabecera de Rebaja */
+        .header-sale {
+            background-color: var(--red-sale);
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            display: none; /* Oculto por defecto */
+        }
+
+        .header-sale.active {
+            display: flex;
+        }
+
+        .sale-title {
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .original-price-box {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-align: right;
+        }
+
+        .original-price-box span {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Cuerpo del Precio */
+        .price-body {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            padding: 20px 10px;
+            background: linear-gradient(to bottom, #222 0%, #000 50%, #222 100%);
+            color: var(--text-white);
+            font-family: "Supermercado One", sans-serif;
+        }
+
+        .currency-symbol { font-size: 3rem; margin-right: 5px; }
+        .main-price { font-size: 8rem; font-weight: bold; line-height: 1; }
+        .cents { font-size: 4rem; font-weight: bold; align-self: flex-start; margin-top: 10px; }
+        .unit { font-size: 2rem; margin-left: 5px; border-left: 2px solid #444; padding-left: 10px; }
+
+        /* --- ESTILOS DEL FORMULARIO --- */
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; }
+        
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: "Supermercado One", sans-serif;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: "Supermercado One", sans-serif;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #b71c1c;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .copy-success {
+            display: none;
+            text-align: center;
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="price-tag">
+        <div class="header-sale" id="saleHeader">
+            <div class="sale-title"><span>↓</span> Rebaja</div>
+            <div class="original-price-box">
+                <span>Precio Original</span>
+                <div class="old-price" id="displayOldPrice">$0.00</div>
+            </div>
+        </div>
+        
+        <div class="price-body">
+            <span class="currency-symbol">$</span>
+            <span class="main-price" id="displayMain">19</span>
+            <span class="cents" id="displayCents">90</span>
+            <span class="unit" id="displayUnit">Kg</span>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h3>Panel de Control</h3>
+        <div class="form-group">
+            <label>Precio Actual (Enteros):</label>
+            <input type="number" id="inputMain" value="19" oninput="updateDisplay()">
+        </div>
+        <div class="form-group">
+            <label>Centavos:</label>
+            <input type="number" id="inputCents" value="90" max="99" oninput="updateDisplay()">
+        </div>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="inputIsSale" onchange="updateDisplay()">
+            <label for="inputIsSale">¿Es Rebaja?</label>
+        </div>
+        <div class="form-group" id="oldPriceGroup" style="display:none;">
+            <label>Precio Anterior:</label>
+            <input type="text" id="inputOldPrice" value="$25.00" oninput="updateDisplay()">
+        </div>
+        <div class="form-group">
+            <label>Unidad:</label>
+            <select id="inputUnit" onchange="updateDisplay()">
+                <option value="Kg">Kilogramo (Kg)</option>
+                <option value="CAJA">Caja (CAJA)</option>
+                <option value="PZA">Pieza (PZA)</option>
+            </select>
+        </div>
+        <button onclick="copyPriceTagToClipboard()">📋 Copiar Pricetag a Portapapeles</button>
+        <div class="copy-success" id="copySuccess">✓ ¡Copiado al portapapeles!</div>
+    </div>
+
+    <script>
+        function updateDisplay() {
+            // Obtener valores de los inputs
+            const mainPrice = document.getElementById('inputMain').value;
+            const cents = document.getElementById('inputCents').value;
+            const isSale = document.getElementById('inputIsSale').checked;
+            const oldPrice = document.getElementById('inputOldPrice').value;
+            const unit = document.getElementById('inputUnit').value;
+
+            // Actualizar Display Principal
+            document.getElementById('displayMain').innerText = mainPrice;
+            document.getElementById('displayCents').innerText = cents.toString().padStart(2, '0');
+            document.getElementById('displayUnit').innerText = unit;
+
+            // Lógica de Rebaja
+            const header = document.getElementById('saleHeader');
+            const oldPriceDiv = document.getElementById('oldPriceGroup');
+            
+            if(isSale) {
+                header.classList.add('active');
+                oldPriceDiv.style.display = 'block';
+                document.getElementById('displayOldPrice').innerText = oldPrice;
+            } else {
+                header.classList.remove('active');
+                oldPriceDiv.style.display = 'none';
+            }
+        }
+
+        async function copyPriceTagToClipboard() {
+            const priceTag = document.querySelector('.price-tag');
+            const successMsg = document.getElementById('copySuccess');
+            
+            try {
+                const canvas = await html2canvas(priceTag, {
+                    scale: 4,
+                    backgroundColor: null,
+                    logging: false,
+                    allowTaint: true,
+                    useCORS: true,
+                    windowHeight: priceTag.offsetHeight * 4,
+                    windowWidth: priceTag.offsetWidth * 4,
+                    imageTimeout: 0
+                });
+                
+                // Convertir canvas a blob de forma segura con máxima calidad
+                const blob = await new Promise((resolve, reject) => {
+                    canvas.toBlob(
+                        (blob) => {
+                            if (blob) {
+                                resolve(blob);
+                            } else {
+                                reject(new Error('Failed to create blob'));
+                            }
+                        },
+                        'image/png',
+                        1
+                    );
+                });
+
+                // Copiar al portapapeles
+                const clipboardItem = new ClipboardItem({ 'image/png': blob });
+                await navigator.clipboard.write([clipboardItem]);
+
+                // Mostrar mensaje de éxito
+                successMsg.style.display = 'block';
+                console.log('✓ Imagen copiada al portapapeles (Alta calidad, fondo transparente)');
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error completo:', error);
+                alert('Error: ' + error.message + '\n\nIntenta copiar y pegar la imagen en tu editor de imágenes.');
+            }
+        }
+    </script>
+</body>
+</html>
