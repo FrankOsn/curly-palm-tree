@@ -364,40 +364,131 @@
 
     <div class="form-container">
         <h3>Panel de Control - Simple</h3>
-        <div class="form-group">
-            <label>Precio Actual (Enteros):</label>
-            <input type="number" id="inputMain" value="19" oninput="updateDisplay()">
-        </div>
-        <div class="form-group">
-            <label>Centavos:</label>
-            <input type="number" id="inputCents" value="90" max="99" oninput="updateDisplay()">
-        </div>
-        <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
-            <input type="checkbox" id="inputIsSale" onchange="updateDisplay()">
-            <label for="inputIsSale" style="margin: 0;">¿Es Rebaja?</label>
-        </div>
-        <div class="form-group" id="oldPriceGroup" style="display:none;">
-            <label>Precio Anterior:</label>
-            <input type="text" id="inputOldPrice" value="$25.00" oninput="updateDisplay()">
-        </div>
-        <div class="form-group">
-            <label>Unidad:</label>
-            <select id="inputUnit" onchange="updateDisplay()">
-                <option value="Kg">Kilogramo (Kg)</option>
-                <option value="CAJA">Caja (CAJA)</option>
-                <option value="PZA">Pieza (PZA)</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label>Color Texto:</label>
-                <input type="color" id="inputTextColor" value="#ffffff" onchange="updateDisplay()">
+        
+        <!-- SECCIÓN: DATOS BÁSICOS -->
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>💰 Datos del Precio</strong>
             </div>
-            <div class="form-group">
-                <label>Color Fondo:</label>
-                <input type="color" id="inputBgColor" value="#000000" onchange="updateDisplay()">
+            <div class="section-content open">
+                <div class="form-group">
+                    <label>Precio Actual (Enteros):</label>
+                    <input type="number" id="inputMain" value="19" oninput="updateDisplay()">
+                </div>
+                <div class="form-group">
+                    <label>Centavos:</label>
+                    <input type="number" id="inputCents" value="90" max="99" oninput="updateDisplay()">
+                </div>
+                <div class="form-group">
+                    <label>Unidad:</label>
+                    <select id="inputUnit" onchange="updateDisplay()">
+                        <option value="Kg">Kilogramo (Kg)</option>
+                        <option value="CAJA">Caja (CAJA)</option>
+                        <option value="PZA">Pieza (PZA)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="inputIsSale" onchange="updateDisplay()">
+                    <label for="inputIsSale" style="margin: 0;">¿Es Rebaja?</label>
+                </div>
+                <div class="form-group" id="oldPriceGroup" style="display:none;">
+                    <label>Precio Anterior:</label>
+                    <input type="text" id="inputOldPrice" value="$25.00" oninput="updateDisplay()">
+                </div>
             </div>
         </div>
+
+        <!-- SECCIÓN: ESTILOS PRECIO -->
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>🎨 Estilos - Precio</strong>
+            </div>
+            <div class="section-content open">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tamaño Símbolo $:</label>
+                        <input type="number" id="inputCurrencySize" value="3" step="0.5" min="0.5" max="6" oninput="updateDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Tamaño Número:</label>
+                        <input type="number" id="inputPriceMainSize" value="8" step="0.5" min="2" max="12" oninput="updateDisplay()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tamaño Centavos:</label>
+                        <input type="number" id="inputCentsSize" value="4" step="0.5" min="1" max="6" oninput="updateDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Tamaño Unidad:</label>
+                        <input type="number" id="inputUnitSize" value="2" step="0.5" min="0.5" max="4" oninput="updateDisplay()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Color Texto:</label>
+                        <input type="color" id="inputTextColor" value="#ffffff" onchange="updateDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Color Fondo:</label>
+                        <input type="color" id="inputBgColor" value="#000000" onchange="updateDisplay()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: BANNER REBAJA -->
+        <div class="form-section" id="saleStyleSection" style="display:none;">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>🔴 Estilos - Banner Rebaja</strong>
+            </div>
+            <div class="section-content open">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Color Banner:</label>
+                        <input type="color" id="inputSaleHeaderColor" value="#d32f2f" onchange="updateDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Color Texto Banner:</label>
+                        <input type="color" id="inputSaleTextColor" value="#ffffff" onchange="updateDisplay()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Tamaño Texto Banner:</label>
+                    <input type="number" id="inputSaleTextSize" value="2" step="0.5" min="0.5" max="4" oninput="updateDisplay()">
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: CONTORNO -->
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>⬜ Contorno</strong>
+            </div>
+            <div class="section-content open">
+                <div class="section-visibility">
+                    <input type="checkbox" id="showBorder" checked onchange="updateDisplay()">
+                    <label for="showBorder" style="margin: 0;">Mostrar Contorno</label>
+                </div>
+                <div id="borderControls">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Color Contorno:</label>
+                            <input type="color" id="inputBorderColor" value="#333333" onchange="updateDisplay()">
+                        </div>
+                        <div class="form-group">
+                            <label>Grosor (px):</label>
+                            <input type="number" id="inputBorderWidth" value="8" step="1" min="1" max="20" oninput="updateDisplay()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button onclick="copyPriceTagToClipboard()">📋 Copiar Pricetag Simple</button>
         <div class="copy-success" id="copySuccess">✓ ¡Copiado al portapapeles!</div>
     </div>
@@ -607,28 +698,70 @@
             const unit = document.getElementById('inputUnit').value;
             const textColor = document.getElementById('inputTextColor').value;
             const bgColor = document.getElementById('inputBgColor').value;
+            const showBorder = document.getElementById('showBorder').checked;
+            const borderColor = document.getElementById('inputBorderColor').value;
+            const borderWidth = document.getElementById('inputBorderWidth').value;
 
+            // Actualizar valores
             document.getElementById('displayMain').innerText = mainPrice;
             document.getElementById('displayCents').innerText = cents.toString().padStart(2, '0');
             document.getElementById('displayUnit').innerText = unit;
             
+            // Aplicar estilos al precio
             const priceBody = document.querySelector('.price-body');
             priceBody.style.backgroundColor = bgColor;
             priceBody.style.color = textColor;
+            
+            // Tamaños
+            const currencySize = document.getElementById('inputCurrencySize').value;
+            const priceMainSize = document.getElementById('inputPriceMainSize').value;
+            const centsSize = document.getElementById('inputCentsSize').value;
+            const unitSize = document.getElementById('inputUnitSize').value;
+            
+            document.querySelector('.currency-symbol').style.fontSize = currencySize + 'rem';
             document.querySelector('.currency-symbol').style.color = textColor;
+            document.querySelector('.main-price').style.fontSize = priceMainSize + 'rem';
+            document.querySelector('.main-price').style.color = textColor;
+            document.querySelector('.cents').style.fontSize = centsSize + 'rem';
+            document.querySelector('.cents').style.color = textColor;
+            document.querySelector('.unit').style.fontSize = unitSize + 'rem';
             document.querySelector('.unit').style.color = textColor;
             document.querySelector('.unit').style.borderLeftColor = textColor;
 
+            // Contorno
+            const priceTag = document.querySelector('.price-tag');
+            if(showBorder) {
+                priceTag.style.border = borderWidth + 'px solid ' + borderColor;
+                document.getElementById('borderControls').style.display = 'block';
+            } else {
+                priceTag.style.border = 'none';
+                document.getElementById('borderControls').style.display = 'block';
+            }
+
+            // Mostrar/Ocultar sección de rebaja
             const header = document.getElementById('saleHeader');
             const oldPriceDiv = document.getElementById('oldPriceGroup');
+            const saleStyleSection = document.getElementById('saleStyleSection');
             
             if(isSale) {
                 header.classList.add('active');
                 oldPriceDiv.style.display = 'block';
+                saleStyleSection.style.display = 'block';
                 document.getElementById('displayOldPrice').innerText = oldPrice;
+                
+                // Aplicar estilos al banner
+                const saleHeaderColor = document.getElementById('inputSaleHeaderColor').value;
+                const saleTextColor = document.getElementById('inputSaleTextColor').value;
+                const saleTextSize = document.getElementById('inputSaleTextSize').value;
+                
+                header.style.backgroundColor = saleHeaderColor;
+                header.style.color = saleTextColor;
+                document.querySelector('.sale-title').style.color = saleTextColor;
+                document.querySelector('.sale-title').style.fontSize = saleTextSize + 'rem';
             } else {
                 header.classList.remove('active');
                 oldPriceDiv.style.display = 'none';
+                saleStyleSection.style.display = 'none';
             }
         }
 
