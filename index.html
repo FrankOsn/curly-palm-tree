@@ -7,26 +7,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display de Precio - Supermercado</title>
+    <title>Generador de Pricetags - Carnicería</title>
     <style>
-        .supermercado-one-regular {
-        font-family: "Supermercado One", sans-serif;
-        font-weight: 400;
-        font-style: normal;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         :root {
-            --bg-black: #1a1a1a;
+            --bg-light: #f0f0f0;
+            --bg-white: #ffffff;
+            --text-dark: #000000;
+            --text-black: #1a1a1a;
             --red-sale: #d32f2f;
-            --text-white: #ffffff;
-            --panel-bg: #121212;
+            --border-gray: #cccccc;
         }
 
         body {
-            font-family: "Supermercado One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            background-color: #f0f0f0;
+            font-family: "Supermercado One", Arial, sans-serif;
+            background-color: var(--bg-light);
             display: flex;
             flex-direction: column;
             gap: 40px;
@@ -34,17 +34,16 @@
             align-items: center;
         }
 
-        /* --- ESTILOS DEL DISPLAY --- */
+        /* --- PRICETAG ORIGINAL --- */
         .price-tag {
             width: 400px;
-            background-color: var(--bg-black);
+            background-color: var(--text-black);
             border: 8px solid #333;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        /* Cabecera de Rebaja */
         .header-sale {
             background-color: var(--red-sale);
             color: white;
@@ -53,7 +52,7 @@
             justify-content: space-between;
             align-items: center;
             height: 60px;
-            display: none; /* Oculto por defecto */
+            display: none;
         }
 
         .header-sale.active {
@@ -88,7 +87,6 @@
             font-size: 1.1rem;
         }
 
-        /* Cuerpo del Precio */
         .price-body {
             display: flex;
             justify-content: center;
@@ -104,149 +102,12 @@
         .cents { font-size: 4rem; font-weight: bold; align-self: flex-start; margin-top: 10px; }
         .unit { font-size: 2rem; margin-left: 5px; border-left: 2px solid #444; padding-left: 10px; }
 
-        /* --- ESTILOS DEL FORMULARIO --- */
-        .form-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 350px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .form-container h3 {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #ccc;
-            margin-bottom: 15px;
-            z-index: 10;
-        }
-
-        .form-section {
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            background-color: #f5f5f5;
-            cursor: pointer;
-            user-select: none;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .section-header:hover {
-            background-color: #efefef;
-        }
-
-        .section-toggle {
-            font-size: 1.2rem;
-            transition: transform 0.3s;
-        }
-
-        .section-toggle.open {
-            transform: rotate(180deg);
-        }
-
-        .section-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            padding: 0 12px;
-        }
-
-        .section-content.open {
-            max-height: 1000px;
-            padding: 12px;
-        }
-
-        .section-visibility {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            padding: 8px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-        }
-
-        .section-visibility input {
-            width: auto;
-        }
-
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-            min-height: 60px;
-            resize: vertical;
-        }
-        .checkbox-group { display: flex; align-items: center; gap: 10px; }
-        
-        select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: "Supermercado One", sans-serif;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            font-family: "Supermercado One", sans-serif;
-            font-size: 0.95rem;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #b71c1c;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        .copy-success {
-            display: none;
-            text-align: center;
-            color: #4caf50;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-top: 10px;
-        }
-
-        /* --- NUEVO PRICETAG CON PRODUCTO Y DESCRIPCIÓN --- */
+        /* --- PRICETAG COMPLETO --- */
         .price-tag-complete {
-            width: 400px;            height: auto;            background-color: white;
-            border: 3px solid #000;
+            width: 400px;
+            height: auto;
+            background-color: white;
+            border: 3px solid #000000;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -277,9 +138,9 @@
         .product-description-section {
             font-size: 0.85rem;
             color: #000;
-            line-height: 1.4;
-            min-height: 32px;
-            margin-top: 4px;
+            line-height: 1.3;
+            min-height: auto;
+            margin-top: 6px;
             margin-bottom: 8px;
             font-family: "Lato", sans-serif;
         }
@@ -330,10 +191,159 @@
             text-align: right;
             font-family: "Roboto", sans-serif;
         }
+
+        /* --- FORMULARIO --- */
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 360px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .form-container h3 {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 15px;
+            z-index: 10;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section-header:hover {
+            background-color: #efefef;
+        }
+
+        .section-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .section-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 12px;
+        }
+
+        .section-content.open {
+            max-height: 1500px;
+            padding: 12px;
+        }
+
+        .section-visibility {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .section-visibility input {
+            width: auto;
+        }
+
+        .form-group { 
+            margin-bottom: 12px;
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 4px; 
+            font-weight: bold; 
+            font-size: 0.85rem; 
+            color: var(--text-black);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--red-sale);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: "Supermercado One", Arial, sans-serif;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #b71c1c;
+        }
+
+        .copy-success {
+            display: none;
+            text-align: center;
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        hr {
+            width: 100%;
+            border: none;
+            border-top: 2px solid #ccc;
+            margin: 40px 0;
+        }
     </style>
 </head>
 <body>
 
+    <!-- PRICETAG SIMPLE (ORIGINAL) -->
     <div class="price-tag">
         <div class="header-sale" id="saleHeader">
             <div class="sale-title"><span>↓</span> Rebaja</div>
@@ -352,7 +362,7 @@
     </div>
 
     <div class="form-container">
-        <h3>Panel de Control</h3>
+        <h3>Panel de Control - Simple</h3>
         <div class="form-group">
             <label>Precio Actual (Enteros):</label>
             <input type="number" id="inputMain" value="19" oninput="updateDisplay()">
@@ -361,9 +371,9 @@
             <label>Centavos:</label>
             <input type="number" id="inputCents" value="90" max="99" oninput="updateDisplay()">
         </div>
-        <div class="form-group checkbox-group">
+        <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="inputIsSale" onchange="updateDisplay()">
-            <label for="inputIsSale">¿Es Rebaja?</label>
+            <label for="inputIsSale" style="margin: 0;">¿Es Rebaja?</label>
         </div>
         <div class="form-group" id="oldPriceGroup" style="display:none;">
             <label>Precio Anterior:</label>
@@ -377,15 +387,17 @@
                 <option value="PZA">Pieza (PZA)</option>
             </select>
         </div>
-        <button onclick="copyPriceTagToClipboard()">📋 Copiar Pricetag a Portapapeles</button>
+        <button onclick="copyPriceTagToClipboard()">📋 Copiar Pricetag Simple</button>
         <div class="copy-success" id="copySuccess">✓ ¡Copiado al portapapeles!</div>
     </div>
 
-    <!-- NUEVO PRICETAG CON PRODUCTO, DESCRIPCIÓN Y PRECIO -->
+    <hr>
+
+    <!-- PRICETAG COMPLETO -->
     <div class="price-tag-complete" id="priceTagComplete">
         <div class="price-tag-complete-content">
-            <div class="product-name-section" id="displayProductName">SIRLOIN SUPREMO</div>
-            <div class="product-description-section" id="displayProductDesc">Corte Premium, Jugcidad Garantizada.</div>
+            <div class="product-name-section" id="displayProductName" style="display:block;">SIRLOIN SUPREMO</div>
+            <div class="product-description-section" id="displayProductDesc" style="display:block;">Corte Premium, Jugcidad Garantizada.</div>
             
             <div class="price-section-complete">
                 <div class="price-display-complete">
@@ -399,106 +411,161 @@
     </div>
 
     <div class="form-container">
-        <h3>Panel de Control - Pricetag Completo</h3>
+        <h3>Panel de Control - Completo</h3>
         
-        <div class="form-group">
-            <label>Plantilla de Tamaño:</label>
-            <select id="inputTemplate" onchange="applyTemplate()">
-                <option value="custom">Personalizado</option>
-                <option value="small">Pequeño (10cm × 8cm)</option>
-                <option value="medium">Mediano (15cm × 12cm)</option>
-                <option value="large">Grande (20cm × 15cm)</option>
-            </select>
-        </div>
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>📐 Tamaño y Espaciado</strong>
+            </div>
+            <div class="section-content open">
+                <div class="form-group">
+                    <label>Plantilla de Tamaño:</label>
+                    <select id="inputTemplate" onchange="applyTemplate()">
+                        <option value="custom">Personalizado</option>
+                        <option value="small">Pequeño (10cm × 8cm)</option>
+                        <option value="medium">Mediano (15cm × 12cm)</option>
+                        <option value="large">Grande (20cm × 15cm)</option>
+                    </select>
+                </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label>Ancho (cm):</label>
-                <input type="number" id="inputWidth" value="10" step="0.5" min="5" max="30" oninput="updateDisplayComplete()">
-            </div>
-            <div class="form-group">
-                <label>Alto (cm):</label>
-                <input type="number" id="inputHeight" value="8" step="0.5" min="5" max="30" oninput="updateDisplayComplete()">
-            </div>
-        </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ancho (cm):</label>
+                        <input type="number" id="inputWidth" value="10" step="0.5" min="5" max="30" oninput="updateDisplayComplete()">
+                    </div>
+                    <div class="form-group">
+                        <label>Alto (cm):</label>
+                        <input type="number" id="inputHeight" value="8" step="0.5" min="5" max="30" oninput="updateDisplayComplete()">
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <label>Espaciado entre líneas (multiplier):</label>
-            <input type="number" id="inputLineSpacing" value="1" step="0.1" min="0.5" max="2" oninput="updateDisplayComplete()">
-        </div>
-        <div class="form-group">
-            <label>Nombre del Producto:</label>
-            <input type="text" id="inputProductName" value="SIRLOIN SUPREMO" oninput="updateDisplayComplete()">
-        </div>
-        <div class="form-group">
-            <label>Descripción:</label>
-            <textarea id="inputProductDesc" oninput="updateDisplayComplete()">Corte Premium, Jugcidad Garantizada.</textarea>
-        </div>
-        <div class="form-group">
-            <label>Precio (Enteros):</label>
-            <input type="number" id="inputPriceMain" value="289" oninput="updateDisplayComplete()">
-        </div>
-        <div class="form-group">
-            <label>Centavos:</label>
-            <input type="number" id="inputPriceCents" value="00" max="99" oninput="updateDisplayComplete()">
-        </div>
-        <div class="form-group">
-            <label>Unidad:</label>
-            <select id="inputPriceUnit" onchange="updateDisplayComplete()">
-                <option value="KG">Kilogramo (KG)</option>
-                <option value="CAJA">Caja (CAJA)</option>
-                <option value="PZA">Pieza (PZA)</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label>Tamaño Nombre (rem):</label>
-                <input type="number" id="inputNameSize" value="1.8" step="0.1" min="0.5" max="3" oninput="updateDisplayComplete()">
-            </div>
-            <div class="form-group">
-                <label>Alineación Nombre:</label>
-                <select id="inputNameAlign" onchange="updateDisplayComplete()">
-                    <option value="left">Izquierda</option>
-                    <option value="center" selected>Centro</option>
-                    <option value="right">Derecha</option>
-                </select>
+                <div class="form-group">
+                    <label>Espaciado entre líneas:</label>
+                    <input type="number" id="inputLineSpacing" value="1" step="0.1" min="0.5" max="2" oninput="updateDisplayComplete()">
+                </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label>Tamaño Desc (rem):</label>
-                <input type="number" id="inputDescSize" value="0.85" step="0.05" min="0.5" max="2" oninput="updateDisplayComplete()">
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>📝 Línea 1 - Nombre</strong>
             </div>
-            <div class="form-group">
-                <label>Alineación Desc:</label>
-                <select id="inputDescAlign" onchange="updateDisplayComplete()">
-                    <option value="left">Izquierda</option>
-                    <option value="center" selected>Centro</option>
-                    <option value="right">Derecha</option>
-                </select>
+            <div class="section-content open">
+                <div class="section-visibility">
+                    <input type="checkbox" id="showLine1" checked onchange="updateDisplayComplete()">
+                    <label for="showLine1" style="margin: 0;">Mostrar</label>
+                </div>
+                <div class="form-group">
+                    <label>Nombre del Producto:</label>
+                    <input type="text" id="inputProductName" value="SIRLOIN SUPREMO" oninput="updateDisplayComplete()">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tamaño (rem):</label>
+                        <input type="number" id="inputNameSize" value="1.8" step="0.1" min="0.5" max="3" oninput="updateDisplayComplete()">
+                    </div>
+                    <div class="form-group">
+                        <label>Alineación:</label>
+                        <select id="inputNameAlign" onchange="updateDisplayComplete()">
+                            <option value="left">Izq</option>
+                            <option value="center" selected>Centro</option>
+                            <option value="right">Der</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label>Tamaño Precio (rem):</label>
-                <input type="number" id="inputPriceSize" value="3" step="0.2" min="1" max="4" oninput="updateDisplayComplete()">
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>📄 Línea 2 - Descripción</strong>
             </div>
-            <div class="form-group">
-                <label>Alineación Precio:</label>
-                <select id="inputPriceAlign" onchange="updateDisplayComplete()">
-                    <option value="left" selected>Izquierda</option>
-                    <option value="center">Centro</option>
-                    <option value="right">Derecha</option>
-                </select>
+            <div class="section-content open">
+                <div class="section-visibility">
+                    <input type="checkbox" id="showLine2" checked onchange="updateDisplayComplete()">
+                    <label for="showLine2" style="margin: 0;">Mostrar</label>
+                </div>
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea id="inputProductDesc" oninput="updateDisplayComplete()">Corte Premium, Jugcidad Garantizada.</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tamaño (rem):</label>
+                        <input type="number" id="inputDescSize" value="0.85" step="0.05" min="0.5" max="2" oninput="updateDisplayComplete()">
+                    </div>
+                    <div class="form-group">
+                        <label>Alineación:</label>
+                        <select id="inputDescAlign" onchange="updateDisplayComplete()">
+                            <option value="left">Izq</option>
+                            <option value="center" selected>Centro</option>
+                            <option value="right">Der</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label>Color del Contorno:</label>
-            <input type="color" id="inputBorderColor" value="#000000" oninput="updateDisplayComplete()">
+
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>💰 Línea 3 - Precio</strong>
+            </div>
+            <div class="section-content open">
+                <div class="section-visibility">
+                    <input type="checkbox" id="showLine3" checked onchange="updateDisplayComplete()">
+                    <label for="showLine3" style="margin: 0;">Mostrar</label>
+                </div>
+                <div class="form-group">
+                    <label>Precio (Enteros):</label>
+                    <input type="number" id="inputPriceMain" value="289" oninput="updateDisplayComplete()">
+                </div>
+                <div class="form-group">
+                    <label>Centavos:</label>
+                    <input type="number" id="inputPriceCents" value="00" max="99" oninput="updateDisplayComplete()">
+                </div>
+                <div class="form-group">
+                    <label>Unidad:</label>
+                    <select id="inputPriceUnit" onchange="updateDisplayComplete()">
+                        <option value="KG">KG</option>
+                        <option value="CAJA">CAJA</option>
+                        <option value="PZA">PZA</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tamaño Precio (rem):</label>
+                        <input type="number" id="inputPriceSize" value="3" step="0.2" min="1" max="4" oninput="updateDisplayComplete()">
+                    </div>
+                    <div class="form-group">
+                        <label>Alineación:</label>
+                        <select id="inputPriceAlign" onchange="updateDisplayComplete()">
+                            <option value="left" selected>Izq</option>
+                            <option value="center">Centro</option>
+                            <option value="right">Der</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button onclick="copyPriceTagComplete()">📋 Copiar Pricetag Completo a Portapapeles</button>
+
+        <div class="form-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>🎨 Estilos Generales</strong>
+            </div>
+            <div class="section-content open">
+                <div class="form-group">
+                    <label>Color del Contorno:</label>
+                    <input type="color" id="inputBorderColor" value="#000000" oninput="updateDisplayComplete()">
+                </div>
+            </div>
+        </div>
+
+        <button onclick="copyPriceTagComplete()">📋 Copiar Pricetag Completo</button>
         <div class="copy-success" id="copySuccessComplete">✓ ¡Copiado al portapapeles!</div>
     </div>
 
@@ -512,19 +579,16 @@
         }
 
         function updateDisplay() {
-            // Obtener valores de los inputs
             const mainPrice = document.getElementById('inputMain').value;
             const cents = document.getElementById('inputCents').value;
             const isSale = document.getElementById('inputIsSale').checked;
             const oldPrice = document.getElementById('inputOldPrice').value;
             const unit = document.getElementById('inputUnit').value;
 
-            // Actualizar Display Principal
             document.getElementById('displayMain').innerText = mainPrice;
             document.getElementById('displayCents').innerText = cents.toString().padStart(2, '0');
             document.getElementById('displayUnit').innerText = unit;
 
-            // Lógica de Rebaja
             const header = document.getElementById('saleHeader');
             const oldPriceDiv = document.getElementById('oldPriceGroup');
             
@@ -554,35 +618,15 @@
                     imageTimeout: 0
                 });
                 
-                // Convertir canvas a blob de forma segura con máxima calidad
                 const blob = await new Promise((resolve, reject) => {
-                    canvas.toBlob(
-                        (blob) => {
-                            if (blob) {
-                                resolve(blob);
-                            } else {
-                                reject(new Error('Failed to create blob'));
-                            }
-                        },
-                        'image/png',
-                        1
-                    );
+                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Failed')), 'image/png', 1);
                 });
 
-                // Copiar al portapapeles
-                const clipboardItem = new ClipboardItem({ 'image/png': blob });
-                await navigator.clipboard.write([clipboardItem]);
-
-                // Mostrar mensaje de éxito
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
                 successMsg.style.display = 'block';
-                console.log('✓ Imagen copiada al portapapeles (Alta calidad, fondo transparente)');
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 2000);
-
+                setTimeout(() => successMsg.style.display = 'none', 2000);
             } catch (error) {
-                console.error('Error completo:', error);
-                alert('Error: ' + error.message + '\n\nIntenta copiar y pegar la imagen en tu editor de imágenes.');
+                alert('Error: ' + error.message);
             }
         }
 
@@ -602,77 +646,48 @@
         }
 
         function updateDisplayComplete() {
-            // Obtener valores
-            const productName = document.getElementById('inputProductName').value || 'PRODUCTO';
-            const productDesc = document.getElementById('inputProductDesc').value || '';
-            const mainPrice = document.getElementById('inputPriceMain').value || '0';
-            const cents = document.getElementById('inputPriceCents').value || '00';
-            const unit = document.getElementById('inputPriceUnit').value || 'KG';
-            const nameSize = document.getElementById('inputNameSize').value || '1.8';
-            const descSize = document.getElementById('inputDescSize').value || '0.85';
-            const priceSize = document.getElementById('inputPriceSize').value || '3';
-            const borderColor = document.getElementById('inputBorderColor').value || '#000000';
-            
-            const nameAlign = document.getElementById('inputNameAlign').value || 'center';
-            const descAlign = document.getElementById('inputDescAlign').value || 'center';
-            const priceAlign = document.getElementById('inputPriceAlign').value || 'left';
-            
-            const widthCm = document.getElementById('inputWidth').value || '10';
-            const heightCm = document.getElementById('inputHeight').value || '8';
-            const lineSpacing = document.getElementById('inputLineSpacing').value || '1';
-            
-            // Verificar visibilidad
             const showLine1 = document.getElementById('showLine1').checked;
             const showLine2 = document.getElementById('showLine2').checked;
             const showLine3 = document.getElementById('showLine3').checked;
-            
-            // Convertir cm a px (aproximadamente 37.8 px por cm)
-            const widthPx = widthCm * 37.8;
-            const heightPx = heightCm * 37.8;
 
-            // Actualizar dimensiones del pricetag
+            const widthCm = document.getElementById('inputWidth').value * 37.8;
+            const heightCm = document.getElementById('inputHeight').value * 37.8;
+
             const priceTag = document.getElementById('priceTagComplete');
-            priceTag.style.width = widthPx + 'px';
-            priceTag.style.height = heightPx + 'px';
+            priceTag.style.width = widthCm + 'px';
+            priceTag.style.height = heightCm + 'px';
 
-            // Actualizar nombre
+            const lineSpacing = document.getElementById('inputLineSpacing').value;
             const displayName = document.getElementById('displayProductName');
             displayName.style.display = showLine1 ? 'block' : 'none';
-            displayName.innerText = productName;
-            displayName.style.fontSize = nameSize + 'rem';
-            displayName.style.textAlign = nameAlign;
+            displayName.innerText = document.getElementById('inputProductName').value;
+            displayName.style.fontSize = document.getElementById('inputNameSize').value + 'rem';
+            displayName.style.textAlign = document.getElementById('inputNameAlign').value;
             displayName.style.lineHeight = 1.1 * lineSpacing;
-            
-            // Actualizar descripción
+
             const displayDesc = document.getElementById('displayProductDesc');
             displayDesc.style.display = showLine2 ? 'block' : 'none';
-            displayDesc.innerText = productDesc;
-            displayDesc.style.fontSize = descSize + 'rem';
-            displayDesc.style.textAlign = descAlign;
+            displayDesc.innerText = document.getElementById('inputProductDesc').value;
+            displayDesc.style.fontSize = document.getElementById('inputDescSize').value + 'rem';
+            displayDesc.style.textAlign = document.getElementById('inputDescAlign').value;
             displayDesc.style.lineHeight = 1.3 * lineSpacing;
             displayDesc.style.marginBottom = showLine2 ? (8 * lineSpacing) + 'px' : '0px';
-            
-            // Actualizar precio
+
             const priceSection = document.querySelector('.price-section-complete');
             priceSection.style.display = showLine3 ? 'flex' : 'none';
-            
-            document.getElementById('displayPriceMain').innerText = mainPrice;
+
+            const priceSize = document.getElementById('inputPriceSize').value;
+            document.getElementById('displayPriceMain').innerText = document.getElementById('inputPriceMain').value;
             document.getElementById('displayPriceMain').style.fontSize = priceSize + 'rem';
-            
-            document.getElementById('displayPriceCents').innerText = cents.toString().padStart(2, '0');
+            document.getElementById('displayPriceCents').innerText = document.getElementById('inputPriceCents').value.padStart(2, '0');
             document.getElementById('displayPriceCents').style.fontSize = (priceSize * 0.45) + 'rem';
-            
-            document.getElementById('displayPriceUnit').innerText = unit;
-            
-            // Alineación de precio
+            document.getElementById('displayPriceUnit').innerText = document.getElementById('inputPriceUnit').value;
+
+            const priceAlign = document.getElementById('inputPriceAlign').value;
             priceSection.style.justifyContent = priceAlign === 'left' ? 'space-between' : priceAlign === 'center' ? 'center' : 'flex-end';
-            if (priceAlign !== 'left') {
-                priceSection.style.gap = '20px';
-            } else {
-                priceSection.style.gap = '0px';
-            }
-            
-            // Actualizar color del borde
+            priceSection.style.gap = priceAlign !== 'left' ? '20px' : '0px';
+
+            const borderColor = document.getElementById('inputBorderColor').value;
             priceTag.style.borderColor = borderColor;
             displayName.style.borderBottomColor = borderColor;
             priceSection.style.borderTopColor = borderColor;
@@ -695,35 +710,17 @@
                 });
                 
                 const blob = await new Promise((resolve, reject) => {
-                    canvas.toBlob(
-                        (blob) => {
-                            if (blob) {
-                                resolve(blob);
-                            } else {
-                                reject(new Error('Failed to create blob'));
-                            }
-                        },
-                        'image/png',
-                        1
-                    );
+                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Failed')), 'image/png', 1);
                 });
 
-                const clipboardItem = new ClipboardItem({ 'image/png': blob });
-                await navigator.clipboard.write([clipboardItem]);
-
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
                 successMsg.style.display = 'block';
-                console.log('✓ Pricetag completo copiado al portapapeles');
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 2000);
-
+                setTimeout(() => successMsg.style.display = 'none', 2000);
             } catch (error) {
-                console.error('Error:', error);
                 alert('Error: ' + error.message);
             }
         }
 
-        // Inicializar al cargar
         updateDisplayComplete();
     </script>
 </body>
