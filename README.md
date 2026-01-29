@@ -30,7 +30,7 @@ Una herramienta web interactiva para crear y exportar etiquetas de precio (price
 
 ## 🚀 Cómo usar
 
-1. Accede a la herramienta: [curly-palm-tree.github.io](https://frankodn.github.io/curly-palm-tree/)
+1. Accede a la herramienta: [https://frankosn.github.io/curly-palm-tree/](https://frankosn.github.io/curly-palm-tree/)
 2. Ingresa el precio (enteros y centavos)
 3. Selecciona la unidad de medida (Kg, CAJA, PZA)
 4. Activa el modo "¿Es Rebaja?" si aplica y añade precio anterior
