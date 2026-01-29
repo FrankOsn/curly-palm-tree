@@ -28,9 +28,10 @@
             font-style: normal;
             background-color: #f0f0f0;
             display: flex;
+            flex-direction: column;
             gap: 40px;
             padding: 50px;
-            align-items: flex-start;
+            align-items: center;
         }
 
         /* --- ESTILOS DEL DISPLAY --- */
@@ -109,7 +110,76 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 300px;
+            width: 350px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .form-container h3 {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 15px;
+            z-index: 10;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section-header:hover {
+            background-color: #efefef;
+        }
+
+        .section-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .section-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 12px;
+        }
+
+        .section-content.open {
+            max-height: 1000px;
+            padding: 12px;
+        }
+
+        .section-visibility {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .section-visibility input {
+            width: auto;
         }
 
         .form-group { margin-bottom: 15px; }
@@ -433,6 +503,14 @@
     </div>
 
     <script>
+        function toggleSection(header) {
+            const toggle = header.querySelector('.section-toggle');
+            const content = header.nextElementSibling;
+            
+            toggle.classList.toggle('open');
+            content.classList.toggle('open');
+        }
+
         function updateDisplay() {
             // Obtener valores de los inputs
             const mainPrice = document.getElementById('inputMain').value;
@@ -543,6 +621,11 @@
             const heightCm = document.getElementById('inputHeight').value || '8';
             const lineSpacing = document.getElementById('inputLineSpacing').value || '1';
             
+            // Verificar visibilidad
+            const showLine1 = document.getElementById('showLine1').checked;
+            const showLine2 = document.getElementById('showLine2').checked;
+            const showLine3 = document.getElementById('showLine3').checked;
+            
             // Convertir cm a px (aproximadamente 37.8 px por cm)
             const widthPx = widthCm * 37.8;
             const heightPx = heightCm * 37.8;
@@ -554,6 +637,7 @@
 
             // Actualizar nombre
             const displayName = document.getElementById('displayProductName');
+            displayName.style.display = showLine1 ? 'block' : 'none';
             displayName.innerText = productName;
             displayName.style.fontSize = nameSize + 'rem';
             displayName.style.textAlign = nameAlign;
@@ -561,13 +645,17 @@
             
             // Actualizar descripción
             const displayDesc = document.getElementById('displayProductDesc');
+            displayDesc.style.display = showLine2 ? 'block' : 'none';
             displayDesc.innerText = productDesc;
             displayDesc.style.fontSize = descSize + 'rem';
             displayDesc.style.textAlign = descAlign;
             displayDesc.style.lineHeight = 1.3 * lineSpacing;
-            displayDesc.style.marginBottom = (8 * lineSpacing) + 'px';
+            displayDesc.style.marginBottom = showLine2 ? (8 * lineSpacing) + 'px' : '0px';
             
             // Actualizar precio
+            const priceSection = document.querySelector('.price-section-complete');
+            priceSection.style.display = showLine3 ? 'flex' : 'none';
+            
             document.getElementById('displayPriceMain').innerText = mainPrice;
             document.getElementById('displayPriceMain').style.fontSize = priceSize + 'rem';
             
@@ -577,7 +665,6 @@
             document.getElementById('displayPriceUnit').innerText = unit;
             
             // Alineación de precio
-            const priceSection = document.querySelector('.price-section-complete');
             priceSection.style.justifyContent = priceAlign === 'left' ? 'space-between' : priceAlign === 'center' ? 'center' : 'flex-end';
             if (priceAlign !== 'left') {
                 priceSection.style.gap = '20px';
