@@ -4,12 +4,29 @@ Una herramienta web interactiva para crear y exportar etiquetas de precio (price
 
 ## 🎯 Características
 
+### Pricetag Simple
 - **📊 Display dinámico** - Visualización en tiempo real del pricetag
 - **💱 Control de precios** - Ingresa precio en enteros y centavos
-- **📈 Gestión de rebajas** - Modo descuento con precio original
+- **📈 Gestión de rebajas** - Modo descuento con precio original personalizable
 - **📋 Selector de unidades** - Elige entre Kg, CAJA o PZA
-- **📸 Exportar a PNG** - Copia el pricetag al portapapeles con máxima calidad
-- **🎨 Diseño profesional** - Interfaz limpia y moderna
+- **🎨 Control total de estilos**:
+  - Tamaño individual de cada elemento (símbolo, número, centavos, unidad)
+  - Color de texto y fondo personalizables
+  - Contorno ajustable o sin borde
+  - Banner de rebaja con colores y tamaños propios
+  - Precio original con estilos independientes
+
+### Pricetag Completo
+- **📝 Secciones por línea** - Nombre, descripción y precio
+- **🖼️ Tamaños en CM** - Plantillas predefinidas (10x8, 15x12, 20x15 cm) o personalizadas
+- **🎨 Estilos por sección** - Color de texto y fondo global
+- **👁️ Visibilidad controlada** - Mostrar/ocultar cada línea con checkboxes
+- **⚙️ Controles avanzados** - Espaciado, alineación, tamaño de fuente por elemento
+
+### Exportación
+- **📸 PNG de ultra alta calidad** - Escala 6x para máxima resolución
+- **🎯 Tamaño fijo** - No se ve afectado por el tamaño de la ventana del navegador
+- **📋 Copiar al portapapeles** - Un clic para usar en PPT, Word, etc.
 
 ## 🚀 Cómo usar
 
@@ -30,10 +47,16 @@ Una herramienta web interactiva para crear y exportar etiquetas de precio (price
 
 ## 📝 Especificaciones del Pricetag
 
-- **Dimensiones**: 400px × Auto
-- **Colores**: Negro (#1a1a1a) con detalles rojo rebaja (#d32f2f)
+### Pricetag Simple
+- **Dimensiones**: 400px de ancho, altura auto
+- **Colores base**: Negro (#000000) con detalles rojo rebaja (#d32f2f)
 - **Tipografía**: Supermercado One
-- **Exportación**: PNG de alta calidad (4x escala) con fondo transparente
+- **Exportación**: PNG de ultra alta calidad (6x escala) con fondo transparente
+
+### Pricetag Completo
+- **Tamaños**: Desde 10x8cm hasta 20x15cm (o personalizados)
+- **Tipografía**: Supermercado One (precio), Roboto (nombre), Lato (descripción)
+- **Exportación**: PNG de ultra alta calidad (6x escala) con fondo transparente
 
 ## 🛠️ Desarrollo local
 
@@ -54,6 +77,17 @@ curly-palm-tree/
 ```
 
 ## 🔄 Actualizaciones recientes
+
+- ✨ **v1.1.0** - Controles completos de estilos
+  - Tamaño individual de cada elemento en pricetag simple
+  - Control de color de texto y fondo en ambos pricetags
+  - Estilos completamente personalizables para rebajas
+  - Banner de rebaja con colores propios
+  - Precio original con estilos independientes
+  - Contorno ajustable o sin borde
+  - Mejora de calidad PNG a 6x escala
+  - Secciones colapsables en formularios
+  - Checkboxes para mostrar/ocultar líneas
 
 - ✨ v1.0 - Lanzamiento inicial
   - Selector de unidades (Kg, CAJA, PZA)
