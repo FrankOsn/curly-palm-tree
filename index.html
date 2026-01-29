@@ -348,8 +348,8 @@
     <div class="price-tag">
         <div class="header-sale" id="saleHeader">
             <div class="sale-title"><span>↓</span> Rebaja</div>
-            <div class="original-price-box">
-                <span>Precio Original</span>
+            <div class="original-price-box" id="originalPriceBox">
+                <span id="originalPriceLabel">Precio Original</span>
                 <div class="old-price" id="displayOldPrice">$0.00</div>
             </div>
         </div>
@@ -463,8 +463,35 @@
             </div>
         </div>
 
-        <!-- SECCIÓN: CONTORNO -->
-        <div class="form-section">
+        <!-- SECCIÓN: PRECIO ORIGINAL -->
+        <div class="form-section" id="originalPriceSection" style="display:none;">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle open">▼</span>
+                <strong>🏷️ Estilos - Precio Original</strong>
+            </div>
+            <div class="section-content open">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tamaño Label:</label>
+                        <input type="number" id="inputOriginalLabelSize" value="0.7" step="0.1" min="0.3" max="2" oninput="updateDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Tamaño Precio:</label>
+                        <input type="number" id="inputOriginalPriceSize" value="1.1" step="0.1" min="0.5" max="2" oninput="updateDisplay()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Color Texto:</label>
+                        <input type="color" id="inputOriginalTextColor" value="#333333" onchange="updateDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Color Fondo:</label>
+                        <input type="color" id="inputOriginalBgColor" value="#ffffff" onchange="updateDisplay()">
+                    </div>
+                </div>
+            </div>
+        </div>
             <div class="section-header" onclick="toggleSection(this)">
                 <span class="section-toggle open">▼</span>
                 <strong>⬜ Contorno</strong>
@@ -747,6 +774,7 @@
                 header.classList.add('active');
                 oldPriceDiv.style.display = 'block';
                 saleStyleSection.style.display = 'block';
+                document.getElementById('originalPriceSection').style.display = 'block';
                 document.getElementById('displayOldPrice').innerText = oldPrice;
                 
                 // Aplicar estilos al banner
@@ -758,10 +786,29 @@
                 header.style.color = saleTextColor;
                 document.querySelector('.sale-title').style.color = saleTextColor;
                 document.querySelector('.sale-title').style.fontSize = saleTextSize + 'rem';
+                
+                // Aplicar estilos al precio original
+                const originalBgColor = document.getElementById('inputOriginalBgColor').value;
+                const originalTextColor = document.getElementById('inputOriginalTextColor').value;
+                const originalLabelSize = document.getElementById('inputOriginalLabelSize').value;
+                const originalPriceSize = document.getElementById('inputOriginalPriceSize').value;
+                
+                const originalPriceBox = document.getElementById('originalPriceBox');
+                originalPriceBox.style.backgroundColor = originalBgColor;
+                originalPriceBox.style.color = originalTextColor;
+                
+                const originalPriceLabel = document.getElementById('originalPriceLabel');
+                originalPriceLabel.style.fontSize = originalLabelSize + 'rem';
+                originalPriceLabel.style.color = originalTextColor;
+                
+                const displayOldPrice = document.getElementById('displayOldPrice');
+                displayOldPrice.style.fontSize = originalPriceSize + 'rem';
+                displayOldPrice.style.color = originalTextColor;
             } else {
                 header.classList.remove('active');
                 oldPriceDiv.style.display = 'none';
                 saleStyleSection.style.display = 'none';
+                document.getElementById('originalPriceSection').style.display = 'none';
             }
         }
 
