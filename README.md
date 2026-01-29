@@ -1,6 +1,6 @@
-# 🏷️ Generador de Pricetags - Carnicería
+# 🏷️ Generador de Tags de Precio - Carnicería
 
-Una herramienta web interactiva para crear y exportar etiquetas de precio (pricetags) profesionales para supermercados y comercios.
+Una herramienta web interactiva para crear y exportar etiquetas de precio (pricetags) profesionales para carnicerías y comercios.
 
 ## 🎯 Características
 
@@ -73,9 +73,10 @@ curly-palm-tree/
 
 Este proyecto está disponible bajo licencia MIT.
 
-## 👤 Autor
+## 👤 Autores
 
-Carnicería - Sistema de gestión de precios
+- **Francisco Osnaya** - Concepto, diseño y especificaciones
+- **GitHub Copilot** - Desarrollo e implementación
 
 ---
 
